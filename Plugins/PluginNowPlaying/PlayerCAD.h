@@ -21,6 +21,8 @@
 
 #include "Player.h"
 
+const int TIMER_RECHECK_COVER = 1;
+
 class PlayerCAD : public Player
 {
 public:

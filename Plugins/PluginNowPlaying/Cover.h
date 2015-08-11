@@ -44,6 +44,7 @@ public:
 	static bool GetCached(std::wstring& path);
 	static bool GetLocal(std::wstring filename, const std::wstring& folder, std::wstring& target);
 	static bool GetLocalAnyImage(const std::wstring& folder, std::wstring& target);
+	static bool GetLocalYouTube(std::wstring filename, std::wstring& target);
 	static bool GetEmbedded(const TagLib::FileRef& fr, const std::wstring& target);
 	static std::wstring GetFileFolder(const std::wstring& file);
 private:

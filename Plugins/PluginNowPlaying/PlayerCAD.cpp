@@ -320,6 +320,8 @@ LRESULT CALLBACK PlayerCAD::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					case 11:
 						if (*data == L' ')
 						{
+							KillTimer(hwnd, TIMER_RECHECK_COVER);
+							SetTimer(hwnd, TIMER_RECHECK_COVER, 1500, nullptr);
 							player->FindCover();
 						}
 						else
@@ -404,6 +406,13 @@ LRESULT CALLBACK PlayerCAD::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 					}
 				}
 			}
+		}
+		return 0;
+	case WM_TIMER:
+		if (wParam == TIMER_RECHECK_COVER)
+		{
+			player->FindCover();
+			KillTimer(hwnd, TIMER_RECHECK_COVER);
 		}
 		return 0;
 

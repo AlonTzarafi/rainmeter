@@ -121,16 +121,28 @@ void Player::FindCover()
 	{
 		std::wstring trackFolder = CCover::GetFileFolder(m_FilePath);
 
-		if (!CCover::GetLocal(m_Album, trackFolder, m_CoverPath) &&
-			!CCover::GetLocal(L"front", trackFolder, m_CoverPath) &&
-			!CCover::GetLocal(L"cover", trackFolder, m_CoverPath) &&
-			!CCover::GetLocal(L"folder", trackFolder, m_CoverPath) &&
-			!CCover::GetLocal(L"CD", trackFolder, m_CoverPath) &&
-			!CCover::GetLocal(m_Artist, trackFolder, m_CoverPath) &&
-			!CCover::GetLocalAnyImage(trackFolder, m_CoverPath))
-		{
-			// Nothing found
-			m_CoverPath.clear();
+		std::wstring youTubeTest = m_FilePath.substr(0, 11);
+		bool youTubeTestResult = false;
+		if (youTubeTest == L"youtube.com" || youTubeTest == L"www.youtube") {
+			youTubeTestResult = true;
+		}
+		if (youTubeTestResult) {
+			if (!CCover::GetLocalYouTube(m_FilePath, m_CoverPath)) {
+				m_CoverPath.clear();
+			}
+		}
+		else {
+			if (!CCover::GetLocal(m_Album, trackFolder, m_CoverPath) &&
+				!CCover::GetLocal(L"front", trackFolder, m_CoverPath) &&
+				!CCover::GetLocal(L"cover", trackFolder, m_CoverPath) &&
+				!CCover::GetLocal(L"folder", trackFolder, m_CoverPath) &&
+				!CCover::GetLocal(L"CD", trackFolder, m_CoverPath) &&
+				!CCover::GetLocal(m_Artist, trackFolder, m_CoverPath) &&
+				!CCover::GetLocalAnyImage(trackFolder, m_CoverPath))
+			{
+				// Nothing found
+				m_CoverPath.clear();
+			}
 		}
 	}
 }

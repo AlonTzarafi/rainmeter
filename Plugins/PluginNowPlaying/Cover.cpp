@@ -18,6 +18,7 @@
 
 #include "StdAfx.h"
 #include "Cover.h"
+#include <Shlobj.h>
 
 namespace {
 
@@ -187,6 +188,46 @@ bool CCover::GetLocalAnyImage(const std::wstring& folder, std::wstring& target)
 			testPath.resize(origLen);
 		}
 	}
+
+	return false;
+}
+bool CCover::GetLocalYouTube(std::wstring filePath, std::wstring& target)
+{
+	std::wstring imagePath = L"";
+
+	DWORD bufSize = 4096;
+	WCHAR* buffer = new WCHAR[bufSize];
+	HRESULT hr = SHGetFolderPath(nullptr, CSIDL_APPDATA, nullptr, SHGFP_TYPE_CURRENT, buffer);
+	if (SUCCEEDED(hr))
+	{
+		imagePath += buffer;
+	} else {
+		return false;
+	}
+
+	imagePath += L"\\foobar2000\\3dydfy\\thumbnails\\https";
+
+	std::wstring wantedClip = filePath.substr();
+	{
+		//remove URL syntax and all punctioation
+		std::wstring::size_type pos = 0;
+		while ((pos = wantedClip.find_first_of(L"./?&=-_", pos)) != std::wstring::npos)
+		{
+			wantedClip.erase(pos, 1);
+		}
+	}
+
+	imagePath += wantedClip;
+
+	imagePath += L"-noblackarea.jpg";
+	
+	if (_waccess(imagePath.c_str(), 0) == 0)
+	{
+		target = imagePath;
+		return true;
+	}
+
+	return false;
 }
 
 /*
